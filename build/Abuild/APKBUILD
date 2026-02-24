@@ -1,0 +1,50 @@
+# Alpine-Maintainer: Krassy Boykinov <kboykinov@teamcentrixx.com>
+# Maintainer: Felix Xing <fxing@qnx.com>
+
+pkgname=gst-libav
+pkgver=1.26.8
+pkgrel=0
+pkgdesc="GStreamer streaming media framework libav plugin"
+url="https://gstreamer.freedesktop.org"
+arch="all"
+license="GPL-2.0-or-later LGPL-2.0-or-later"
+depends="ffmpeg-libavcodec ffmpeg-libavfilter gstreamer glib gst-plugins-base"
+makedepends="
+    coreutils
+    ffmpeg-dev
+    gst-plugins-base-dev
+    gstreamer-dev
+    meson
+    orc-dev
+    clang
+    libc++-dev
+    "
+source="https://gstreamer.freedesktop.org/src/gst-libav/gst-libav-$pkgver.tar.xz
+    "
+subpackages="$pkgname-dbg"
+
+build() {
+    CC=clang \
+    CXX=clang++ \
+    CFLAGS="$CFLAGS -O2" \
+    CXXFLAGS="$CXXFLAGS -O2" \
+    CPPFLAGS="$CPPFLAGS -O2" \
+    abuild-meson \
+        -Db_lto=false \
+        -Dpackage-origin="www.qnx.com" \
+        -Dpackage-name="GStreamer libav  plugin (QNX)" \
+        . output
+    meson compile -C output
+}
+
+check() {
+    meson test --print-errorlogs -C output
+}
+
+package() {
+    DESTDIR="$pkgdir" meson install --no-rebuild -C output
+}
+
+sha512sums="
+f5e2cc52ef2eb53e467ce2df2abf01e4dce636aa0f543f4fafb6e62edd0bcbe172b3c88f4c98d04ef55d26e1c707553660d666ddb765a0e792aa67606e2d2692  gst-libav-1.26.8.tar.xz
+"
