@@ -3,7 +3,7 @@
 
 pkgname=gst-libav
 pkgver=1.26.8
-pkgrel=${pkgrel:-0}
+pkgrel=0
 pkgdesc="GStreamer streaming media framework libav plugin"
 url="https://gstreamer.freedesktop.org"
 arch="all"
@@ -45,7 +45,6 @@ package() {
     DESTDIR="$pkgdir" meson install --no-rebuild -C output
 }
 
-options="$options ${DISABLE_CHECK:+!check}"
 sha512sums="
 f5e2cc52ef2eb53e467ce2df2abf01e4dce636aa0f543f4fafb6e62edd0bcbe172b3c88f4c98d04ef55d26e1c707553660d666ddb765a0e792aa67606e2d2692  gst-libav-1.26.8.tar.xz
 "
